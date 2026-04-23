@@ -1,0 +1,22 @@
+node_modules/
+dist/
+
+# Yarn (Berry; node-modules linker — keep lockfile & config committed)
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+.env
+.env.local
+.env.docker
+*.log
+.DS_Store
+coverage/
+.vite/
+playwright-report/
+test-results/
+blob-report/
+playwright/.cache/

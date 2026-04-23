@@ -1,0 +1,44 @@
+# Production-oriented layout per docs/HARNESS.md
+# Local override: TENEX_ENV_FILE=./.env docker compose up -d
+services:
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - internal
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    expose:
+      - "3000"
+    environment:
+      OLLAMA_URL: http://ollama:11434
+    env_file:
+      - ${TENEX_ENV_FILE:-/opt/tenex-take-home/.env}
+    depends_on:
+      - ollama
+    networks:
+      - internal
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: .
+      dockerfile: infra/nginx/Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - internal
+    restart: unless-stopped
+
+networks:
+  internal:
+
+volumes:
+  ollama_data:

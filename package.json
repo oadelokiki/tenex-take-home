@@ -1,0 +1,23 @@
+{
+  "name": "tenex-take-home",
+  "private": true,
+  "packageManager": "yarn@4.6.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "yarn workspace @tenex/api build && yarn workspace @tenex/web build",
+    "test": "yarn workspace @tenex/api test && yarn workspace @tenex/web test",
+    "test:e2e": "playwright test",
+    "test:all": "yarn test && yarn test:e2e",
+    "start:e2e": "yarn workspace @tenex/web build && concurrently -k -s first -n api,web \"TENEX_USE_E2E_ENV=1 yarn workspace @tenex/api dev\" \"yarn workspace @tenex/web preview:e2e\"",
+    "lint": "yarn workspace @tenex/api lint 2>/dev/null || true"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
